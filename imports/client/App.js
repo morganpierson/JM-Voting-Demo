@@ -41,7 +41,7 @@ class App extends Component {
           <h1>Level up voting</h1>
         </header>
         <main>
-          <form onSubmit={this.addItems}>
+          <form onSubmit={this.addItems} className='new-items'>
             <input type='text' ref='item1' />
             <input type='text' ref='item2' />
             <button type='submit'>Submit vote</button>
