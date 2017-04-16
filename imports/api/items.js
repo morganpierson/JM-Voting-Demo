@@ -5,7 +5,7 @@ const Items = new Mongo.Collection('items');
 if(Meteor.isServer) {
   Meteor.publish('allItems', function() {
     return Items.find({}, {
-      limit: 1,
+      limit: 50,
       sort: { lastUpdated: 1 }
     })
   });

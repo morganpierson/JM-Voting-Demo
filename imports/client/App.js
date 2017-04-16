@@ -9,6 +9,15 @@ class App extends Component {
     super();
 
     this.addItems = this.addItems.bind(this);
+    this.showAll = this.showAll.bind(this);
+  }
+
+  showAll() {
+    if(this.props.showAll) {
+      Session.set('showAll', false)
+    } else {
+      Session.set('showAll', true)
+    }
   }
 
   addItems(e) {
@@ -37,6 +46,7 @@ class App extends Component {
         <header>
           <h1>Level up voting</h1>
           <LoginButtons />
+          <button onClick={this.showAll}>Show {this.props.showAll ? 'One' : 'All'}</button>
         </header>
         <main>
           <form onSubmit={this.addItems} className='new-items'>
@@ -57,11 +67,13 @@ class App extends Component {
 
 export default createContainer(() => {
   let itemsSub = Meteor.subscribe('allItems');
+  let showAll = Session.get('showAll');
 
   return {
+    showAll: showAll,
     ready: itemsSub.ready(),
     items: Items.find({}, {
-      limit: 1,
+      limit: showAll ? 50 : 1,
       sort: { lastUpdated: 1 }
     }).fetch()
   }
