@@ -1,36 +1,69 @@
 import React, { Component } from 'react';
-
-let hello = 'Hello World!'
-// let headingClick = () => {
-//   console.log('This is clicked')
-// }
-
+import Items from '../api/items';
+import { createContainer } from 'meteor/react-meteor-data';
+import Item from './Item';
 
 class App extends Component {
   constructor() {
     super();
 
-    this.state = {
-      count: 0
+    this.addItems = this.addItems.bind(this);
+  }
+
+  addItems(e) {
+    e.preventDefault()
+
+    const itemOne = this.refs.item1.value.trim();
+    const itemTwo = this.refs.item2.value.trim();
+    if(itemOne !== '' && itemTwo !== '') {
+
+    Items.insert({
+      
+    item1: {
+      text: itemOne,
+      value: 0
+    },
+    item2: {
+      text: itemTwo,
+      value: 0
     }
+  })
 
-    this.headingClick = this.headingClick.bind(this);
+  this.refs.item1.value = '';
+  this.refs.item2.value = '';
   }
-
- headingClick() {
-  this.setState({ count: this.state.count += 1 })
   }
-
 
   render() {
     return(
-        <header onClick={this.headingClick}>
-          <Heading count={this.state.count} />
+      <div>
+        <header>
+          <h1>Level up voting</h1>
         </header>
- 
+        <main>
+          <form onSubmit={this.addItems}>
+            <input type='text' ref='item1' />
+            <input type='text' ref='item2' />
+            <button type='submit'>Submit vote</button>
+          </form>
+          {this.props.items.map((item) => {
+            return (
+              <Item item={item} key={item._id}/>
+            )
+          })}
+        </main>
+      </div>
     )
   }
 }
+
+export default createContainer(() => {
+  return {
+    items: Items.find({}).fetch()
+  }
+}, App)
+
+
 
 class Heading extends Component {
   render() {
@@ -40,4 +73,3 @@ class Heading extends Component {
   }
 }
 
-export default App;

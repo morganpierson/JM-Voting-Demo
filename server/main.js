@@ -1,10 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-
-const Tests = new Mongo.Collection('tests')
+import Items from '../imports/api/items';
 
 Meteor.startup(() => {
-  Tests.insert({
-    name: 'Hi',
-    value: 1
-  })
+  
 })
