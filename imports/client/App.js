@@ -24,9 +24,7 @@ class App extends Component {
           this.refs.item1.value = '';
           this.refs.item2.value = '';
         }
-      });
-
-      
+      });  
   }
   }
 
@@ -46,11 +44,11 @@ class App extends Component {
             <input type='text' ref='item2' />
             <button type='submit'>Submit vote</button>
           </form>
-          {this.props.items.map((item) => {
-            return (
-              <Item item={item} key={item._id}/>
-            )
-          })}
+            {this.props.items.map((item) => {
+              return (
+                <Item item={item} key={item._id}/>
+              )
+            })}
         </main>
       </div>
     )
@@ -62,7 +60,10 @@ export default createContainer(() => {
 
   return {
     ready: itemsSub.ready(),
-    items: Items.find().fetch()
+    items: Items.find({}, {
+      limit: 1,
+      sort: { lastUpdated: 1 }
+    }).fetch()
   }
 }, App)
 

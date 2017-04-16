@@ -4,7 +4,10 @@ const Items = new Mongo.Collection('items');
 
 if(Meteor.isServer) {
   Meteor.publish('allItems', function() {
-    return Items.find()
+    return Items.find({}, {
+      limit: 1,
+      sort: { lastUpdated: 1 }
+    })
   });
 
 
@@ -22,19 +25,27 @@ if(Meteor.isServer) {
       })
     },
     voteOnItem(item, position) {
+      check(item, Object);
+      let date = new Date()
       if(position === 'itemOne') {
-      if(Meteor.userId()) {
-        Items.update(item._id, {
-          $inc: {
-            'item1.value': 1 
-          }
-        })
-      } 
+        if(Meteor.userId()) {
+          Items.update(item._id, {
+            $inc: {
+              'item1.value': 1 
+            },
+            $set: {
+              'lastUpdated': date
+            }
+          })
+        } 
     } else {
       Items.update(item._id, {
           $inc: {
             'item2.value': 1 
-          }
+          },
+            $set: {
+              'lastUpdated': date
+            }
         })
       }
     }
