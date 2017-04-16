@@ -4,23 +4,11 @@ import Items from '../api/items';
 class Item extends Component {
 
   voteOne() {
-    if(Meteor.userId) {
-      Items.update(this.props.item._id, {
-        $inc: {
-          'item1.value': 1 
-        }
-      })
-    }
+    Meteor.call('voteOnItem', this.props.item, 'itemOne')
   }
 
   voteTwo() {
-    if(Meteor.userId){
-      Items.update(this.props.item._id, {
-        $inc: {
-          'item2.value': 1 
-        }
-      })
-    }
+    Meteor.call('voteOnItem', this.props.item, 'itemTwo')
   }
 
   render() {
