@@ -31,6 +31,9 @@ class App extends Component {
   }
 
   render() {
+    if(!this.props.ready) {
+      return <div>Loading...</div>
+    }
     return(
       <div>
         <header>
@@ -55,14 +58,18 @@ class App extends Component {
 }
 
 export default createContainer(() => {
+  let itemsSub = Meteor.subscribe('allItems');
+
   return {
-    items: Items.find({}).fetch()
+    ready: itemsSub.ready(),
+    items: Items.find().fetch()
   }
 }, App)
 
 
 
 class Heading extends Component {
+  
   render() {
     return (
         <h1>{this.props.count}</h1>
