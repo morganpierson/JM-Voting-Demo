@@ -31,7 +31,7 @@ if(Meteor.isServer) {
       check(item, Object);
       let date = new Date()
       if(position === 'itemOne') {
-        if(Meteor.userId()) {
+        
           Items.update(item._id, {
             $inc: {
               'item1.value': 1 
@@ -40,7 +40,7 @@ if(Meteor.isServer) {
               'lastUpdated': date
             }
           })
-        } 
+         
     } else {
       Items.update(item._id, {
           $inc: {

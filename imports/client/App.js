@@ -65,7 +65,7 @@ class App extends Component {
           <form onSubmit={this.addItems} className='new-items'>
             <input type='text' ref='item1' />
             <input type='text' ref='item2' />
-            <button type='submit'>Submit vote</button>
+            <button type='submit'>Add Items</button>
           </form>
             {this.props.items.map((item) => {
               return (
