@@ -3,13 +3,22 @@ import { LoginButtons } from 'meteor/okgrow:accounts-ui-react';
 import Items from '../api/items';
 import { createContainer } from 'meteor/react-meteor-data';
 import Item from './Item';
+let Client = require('instagram-private-api').V1;
 
 class App extends Component {
   constructor() {
     super();
 
+    this.state = {
+      images: []
+    }
+
     this.addItems = this.addItems.bind(this);
     this.showAll = this.showAll.bind(this);
+  }
+
+  componentWillMount() { 
+   Meteor.call('getLocationPhotos')
   }
 
   showAll() {
@@ -22,18 +31,22 @@ class App extends Component {
 
   addItems(e) {
     e.preventDefault()
-
-    const itemOne = this.refs.item1.value.trim();
-    const itemTwo = this.refs.item2.value.trim();
+    console.log("images: ",this.state.images)
+    const itemOne = this.refs.item1.value.trim()
+    const itemTwo = this.refs.item2.value.trim()
     if(itemOne !== '' && itemTwo !== '') {
       check(itemOne, String)
       check(itemTwo, String)
+      Meteor.call('getLocationPhotos');
+      //Meteor.call('testIg');
       Meteor.call('insertNewItem', itemOne, itemTwo, (err, res) => {
         if(!err) {
           this.refs.item1.value = '';
           this.refs.item2.value = '';
         }
       });  
+
+      
   }
   }
 
@@ -44,7 +57,7 @@ class App extends Component {
     return(
       <div>
         <header>
-          <h1>Level up voting</h1>
+          <h1>Jumper Media Voting</h1>
           <LoginButtons />
           <button onClick={this.showAll}>Show {this.props.showAll ? 'One' : 'All'}</button>
         </header>
